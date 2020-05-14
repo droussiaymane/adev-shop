@@ -335,5 +335,5 @@ def Remove_Order(request,pk):
     return redirect('core:cart')
 
 
-def views_404(request,exception):
+def views_404(request,*args, **kwargs):
     return render(request,'errors_404.html')
