@@ -24,7 +24,7 @@
                                     <div class="shop hover-style mb-30">
                                         <div class="shop-img">
                                             <a href="{% url 'core:detail_item' item.pk %}">
-                                                <img src="{{item.image_core.url}}" alt="" />	
+                                                <img src="{% static "assets/img/shop/2.jpg" %}" alt="" />	
                                             </a>	
                                             <div class="shop-title title-style-1">
                                                 <h3><a href="preduct-details.html">{{item.title}}</a></h3>
