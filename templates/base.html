@@ -81,7 +81,7 @@
                                         {% for item in order.order_items.all %}
                                             <li>
                                                 <div class="cart-img">
-                                                    <a href="{% url 'core:detail_item' item.item.pk %}"><img width="80" src="{{item.item.image_core.url}}" alt="" /></a>
+                                                    <a href="{% url 'core:detail_item' item.item.pk %}"><img width="80" src="{% static "assets/img/shop/2.jpg" %}" alt="" /></a>
                                                 </div>
                                                 <div class="cart-content">
                                                     <h3><a href="{% url 'core:detail_item' item.item.pk %}"> {{item.quantity}} x {{item.item.title}}</a> </h3>
