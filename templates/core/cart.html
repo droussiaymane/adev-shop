@@ -53,7 +53,7 @@
                                             <tr>
                                                 <td class="product-remove"><i data-toggle="modal" onclick="remove_model({{orderItem.pk}})" data-target="#myModal" class="fa fa-times"></i></td>
                                                 <td class="product-thumbnail">
-                                                    <a href="{% url 'core:detail_item' orderItem.item.pk %}"><img width="90" src="{{orderItem.item.image_core.url}}" alt=""></a>
+                                                    <a href="{% url 'core:detail_item' orderItem.item.pk %}"><img width="90" src="{% static "assets/img/shop/2.jpg" %}" alt=""></a>
                                                 </td>
                                                 <td class="product-name"><a href="#">{{orderItem.item.title}}</a></td>
                                                 <td class="product-price">$ <span class="amount{{forloop.counter}}"> {{orderItem.item.price}}</span></td>
