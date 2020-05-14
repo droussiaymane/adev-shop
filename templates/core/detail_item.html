@@ -32,11 +32,11 @@
                             <!-- Tab panes -->
                             <div class="tab-content mb-10">
                                 <div class="pro-large-img tab-pane active" >
-                                    <img src="{{item.image_core.url}}" alt="" />
+                                    <img src="{% static "assets/img/shop/2.jpg" %}" alt="" />
                                 </div>
                                 {% for images in item.imagedetail_set.all %}
                                 <div class="pro-large-img tab-pane" id="{{images.pk}}">
-                                    <img src="{{images.image.url}}" alt="" />
+                                    <img src="{% static "assets/img/shop/2.jpg" %}" alt="" />
                                 </div>
                                 {% endfor %}
                               
@@ -44,7 +44,7 @@
                             <!-- QuickView Product Thumbnail Slider -->
                             <div class="pro-thumb-img-slider">
                             {% for images in item.imagedetail_set.all %}
-                                <div><a href="#{{images.pk}}" onclick="myfunction({{images.pk}})" data-toggle="tab"><img src="{{images.image.url}}" alt="" /></a></div>
+                                <div><a href="#{{images.pk}}" onclick="myfunction({{images.pk}})" data-toggle="tab"><img src="{% static "assets/img/shop/2.jpg" %}" alt="" /></a></div>
                              {% endfor %}
                              
                             </div>
