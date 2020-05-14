@@ -1,0 +1,1 @@
+web: gunicorn adev-shopping.wsgi --log-file -

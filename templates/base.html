@@ -1,0 +1,229 @@
+<!doctype html>
+{% load static %}
+{% load account %}
+<html class="no-js" lang="zxx">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Adev Shopping</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+		
+		<!-- all css here -->
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/pe-icon-7-stroke.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/shortcodes/shortcode.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+        {% block style %}
+        {% endblock style %}
+        <script src="{% static 'assets/js/vendor/modernizr-2.8.3.min.js' %}"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <!-- Add your site or application content here -->
+        <div class="waraper">
+            <header>
+                <div class="header-area">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3  col-sm-4 col-xs-4">
+                                <div class="logo">
+                                    <a href=" {% url 'core:home' %} "><img src="{% static 'assets/img/logo/logo.png' %}" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-2 col-xs-2 text-center">
+                                <div class="main-menu display-inline">
+                                    <nav>
+                                        <ul class="menu">
+                                            <li><a href="{% url 'core:home' %}">HOME</a></li>
+                                            <li><a href="{% url 'core:about_us' %}">ABOUT US</a></li>
+                                        
+                                            <li><a href="{% url 'core:contact_us' %}">CONTACT</a></li>
+                                            
+                                            
+                                            {% if request.user.is_authenticated %}
+                                             <li><a href="{% url 'core:your_orders' %}">Orders</a></li>
+                                            <li class="checkout_"><a href="{% url 'core:cart' %}">Cart</a></li>
+                                            
+                                            <li class="logout"><a href="{% url 'account_logout' %}">Logout</a></li>
+                                           {% else %}
+                                   
+                                               <li class="login"> 
+                                        <a href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                                   
+                                    </li>
+                                             {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-lg-3 col-xs-6 col-sm-6 text-right text-sm text-res">
+                               {% if request.user.is_authenticated %}
+                                
+                                    <div class="user">
+                                    
+                                        <a href="{% url 'account_logout' %}" > <i class="pe-7s-power"></i></a>
+                                    </div>
+                                    <div class="cart-user-language">
+                                    <div class="shopping-cart ml-30">
+                                        <a class="top-cart" href="{% url 'core:cart' %}"><i class="pe-7s-cart"></i></a>
+                                        <ul>
+                                        {% for item in order.order_items.all %}
+                                            <li>
+                                                <div class="cart-img">
+                                                    <a href="{% url 'core:detail_item' item.item.pk %}"><img width="80" src="{{item.item.image_core.url}}" alt="" /></a>
+                                                </div>
+                                                <div class="cart-content">
+                                                    <h3><a href="{% url 'core:detail_item' item.item.pk %}"> {{item.quantity}} x {{item.item.title}}</a> </h3>
+                                                    <span><b>{{item.size}}, {{item.color}}</b></span>
+                                                    <span class="cart-price">$ {{item.get_total}}</span>
+                                                </div>
+                                                <div class="cart-del">
+                                                    <a href="{% url 'core:remove_from_cart' item.pk %}"><i class="pe-7s-close-circle"></i></a>
+                                                </div>
+                                            </li>
+                                            {% empty %}
+                                            <li>       <div class="cart-content">
+                                                    <h3 style="color:white">  No order Yet  </h3>
+                                                   
+                                                </div>
+                                                 </li>
+                                            {% endfor %}
+                                         
+                                            <li>
+                                                <hr class="shipping-border" />
+                                                <div class="shipping">
+                                                    <span class="f-left"> Total </span>
+                                                    <span class="f-right cart-price">$ {% if order %}{{order.get_total}}{% else %}0{% endif %} </span> 
+                                                </div>
+                                            </li>
+                                            <li class="checkout m-0"><a href="{% url 'core:cart' %}">checkout <i class="pe-7s-angle-right"></i></a></li>
+                                        </ul>							
+                                    </div>
+                                 
+                                    {% else %}
+                                    <div class="user">
+                                        <a href="#" data-toggle="modal" data-target="#loginModal"><i class="pe-7s-add-user"></i></a>
+                                    </div>
+                                    {% endif %}
+                                   
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mobile-menu"></div>
+                    </div>
+                </div>
+            </header>
+            <!-- header end -->
+                  
+                        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}" role="alert">
+  {{message}}
+</div>
+            
+            {% endfor %}
+            {% endif %}
+               {% block content %}
+         
+       
+          {% endblock content %}		
+      
+            <!-- footer area end -->
+            <footer class="footer-area">
+              
+                <div class="container-fluid">
+                    <div class="footer-bottom text-center ptb-20">
+                        <p>
+                            © 2020-2021
+                          
+                            . All Rights Reserved.
+                        </p>
+                         <div class="footer-logo">
+                                <ul>
+                                    <li><a href="https://www.facebook.com/droussi.aymane/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="https://www.linkedin.com/in/aymane-droussi-0417421a5/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                                    <li><a href="https://www.instagram.com/droussi.aymane/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                                </ul>
+                            </div>
+                    </div>
+                </div>
+               
+                           
+                        
+            </footer>
+            <!-- loginModal -->
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="login">
+                                <div class="login-form-container">
+                                    <div class="login-text">
+                                        <h2>login</h2>
+                                        <span>Please login using account detail bellow.</span>
+                                    </div>
+                                    <div class="login-form">
+                                        <form action="{% url 'account_login' %}" method="post">
+                                        {% csrf_token %}
+                                            <input type="text" name="login" required placeholder="Username">
+                                            <input type="password" name="password" required placeholder="Password">
+                                            <div class="button-box">
+                                                <div class="login-toggle-btn">
+                                                    <input type="checkbox" name="remember" id="remember">
+                                                    <label for="remember">Remember me</label>
+                                                    <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
+                                                </div>
+                                                <button type="submit" class="default-btn floatright">Login</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- loginModal end -->
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+		<!-- all js here -->
+        <script src="{% static 'assets/js/vendor/jquery-1.12.0.min.js' %}"></script>
+        <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.meanmenu.js' %}"></script>
+        <script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+        <script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+        <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.counterup.min.js' %}"></script>
+        <script src="{% static 'assets/js/waypoints.min.js' %}"></script>
+        <script src="{% static 'assets/js/ajax-mail.js' %}"></script>
+        <script src="{% static 'assets/js/plugins.js' %}"></script>
+        <script src="{% static 'assets/js/mains.js' %}"></script>
+        {% block script %}
+        {% endblock script %}
+    </body>
+</html>

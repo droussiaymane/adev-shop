@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <!-- breadcrumb start -->
+            <div class="breadcrumb-area">
+                <div class="container-fluid text-center">
+                    <div class="breadcrumb-stye gray-bg ptb-100">
+                        <h2 class="page-title">contact us</h2>
+                        <ul>
+                            <li><a href="#">home</a></li>
+                            <li class="active">contact us</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- breadcrumb end -->
+            <!-- contact-area start -->
+            <div class="contact-area ptb-100">
+                <div class="container-fluid map-contact">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-7 col-sm-12 text-center">
+                            <div class="contact-from gray-bg">
+                                <form id="contact-form"  method="post">
+                                {% csrf_token %}
+                                    <input name="subject" type="text" placeholder="Subject">
+                                    <input name="email" type="email" placeholder="Email">
+                                    <textarea name="message" placeholder="Your message"></textarea>
+                                    <button class="submit" type="submit">Send Message</button>
+                                </form>
+                                <p class="form-messege"></p>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-12">
+                            <div class="communication contact-from">
+                                <div class="single-communication">
+                                    <div class="communication-icon">
+                                        <i class="fa fa-home" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="communication-text">
+                                        <h3>Address:</h3>
+                                        <p>Hay Lalla Meryem Bloc D Benslimane  </p>
+                                    </div>
+                                </div>
+                                <div class="single-communication">
+                                    <div class="communication-icon">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="communication-text">
+                                        <h3>Phone:</h3>
+                                        <p>+212636686670</p>
+                                    </div>
+                                </div>
+                                <div class="single-communication">
+                                    <div class="communication-icon">
+                                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="communication-text">
+                                        <h3>Email:</h3>
+                                        <p>adev.off@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<iframe width="100%" src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d15068.60996916089!2d-7.133679793239112!3d33.62312832620677!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1589377098441!5m2!1sfr!2sma" width="1644" height="500" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+
+{% endblock content %}
