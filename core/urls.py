@@ -1,7 +1,7 @@
 
 from django.urls import path,include
 
-from .views import Home,DetailItem,Cart,Update_Cart,Remove_from_cart,Coupon_add,Checkout,Billing_Adress,Payment_stripe,Payment_paypal,about_us,contact_us,Your_Orders,Remove_Order,views_404
+from .views import Home,DetailItem,Cart,Update_Cart,Remove_from_cart,Coupon_add,Checkout,Billing_Adress,Payment_stripe,Payment_paypal,about_us,contact_us,Your_Orders,Remove_Order
 
 
 app_name='core'
@@ -21,8 +21,7 @@ urlpatterns = [
   path('order/payment/stripe/',Payment_stripe,name="stripe"),
   path('billing_adress/',Billing_Adress,name="adress"),
   path('order/payment/paypal/',Payment_paypal,name="paypal"),
-  path('error-404'/,views_404,name="error-404"),
-
+  
 
 
 ]
