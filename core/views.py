@@ -336,4 +336,4 @@ def Remove_Order(request,pk):
 
 
 def views_404(request,*args, **kwargs):
-    return render(request,'errors_404.html')
+    return render(request,'errors_404.html',status=404)
