@@ -230,7 +230,8 @@ def Checkout(request):
 def Payment_stripe(request):
     order=Order.objects.get(user=request.user,is_ordered=False)
     if order.adress is None:
-        return HttpResponse("ok")
+        messages.info(request,"please Submit Your Billing Adress first !")
+        return redirect('core:checkout')
     else:
 
     
@@ -335,5 +336,5 @@ def Remove_Order(request,pk):
     return redirect('core:cart')
 
 
-def views_404(request,*args, **kwargs):
+def views_404(request):
     return render(request,'errors_404.html',status=404)
