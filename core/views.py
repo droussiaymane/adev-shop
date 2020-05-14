@@ -229,53 +229,57 @@ def Checkout(request):
 @login_required(login_url="/login/")
 def Payment_stripe(request):
     order=Order.objects.get(user=request.user,is_ordered=False)
+    if order.adress is None:
+        return HttpResponse("ok")
+    else:
+
     
-    try:
-        token=request.POST['stripeToken']
-        #creer une charge
-        charge = stripe.Charge.create(
-        amount=int(order.get_total())*100, #per cent 
-        currency="usd",
-        description="My First Test Charge (created for API docs)",
-        source=token, # obtained with Stripe.js
-        )
+        try:
+            token=request.POST['stripeToken']
+            #creer une charge
+            charge = stripe.Charge.create(
+            amount=int(order.get_total())*100, #per cent 
+            currency="usd",
+            description="My First Test Charge (created for API docs)",
+            source=token, # obtained with Stripe.js
+            )
 
-        payment=Payment(user=request.user,stripe_id_charge=charge['id'],amount=order.get_total(),date_payment=timezone.now())
-        payment.save()
-        order.payment=payment
-        order.is_ordered=True
-        order.save()
+            payment=Payment(user=request.user,stripe_id_charge=charge['id'],amount=order.get_total(),date_payment=timezone.now())
+            payment.save()
+            order.payment=payment
+            order.is_ordered=True
+            order.save()
 
-        # change is_ordered from false to true
-        for items in order.order_items.all():
-            items.is_ordered=True
-            items.save()
-        messages.success(request,"your order has been done !")
-        return redirect('core:home')
+            # change is_ordered from false to true
+            for items in order.order_items.all():
+                items.is_ordered=True
+                items.save()
+            messages.success(request,"your order has been done !")
+            return redirect('core:home')
 
-        
-    except stripe.error.CardError as e:
-        messages.warning(request,"Card error")
-        return redirect('core:checkout')
+            
+        except stripe.error.CardError as e:
+            messages.warning(request,"Card error")
+            return redirect('core:checkout')
 
-    except stripe.error.RateLimitError as e:
-        messages.warning(request,"RateLimitError")
-        return redirect('core:checkout')
-    except stripe.error.InvalidRequestError as e:
-        messages.warning(request,"InvalidRequestError")
-        return redirect('core:checkout')
-    except stripe.error.AuthenticationError as e:
-        messages.warning(request,"AuthenticationError")
-        return redirect('core:checkout')
-    except stripe.error.APIConnectionError as e:
-        messages.warning(request,"APIConnectionError")
-        return redirect('core:checkout')
-    except stripe.error.StripeError as e:
-        messages.warning(request,"StripeError")
-        return redirect('core:checkout')
-    except Exception as e:
-        messages.warning(request,"error ! Try again please !")
-        return redirect('core:checkout')
+        except stripe.error.RateLimitError as e:
+            messages.warning(request,"RateLimitError")
+            return redirect('core:checkout')
+        except stripe.error.InvalidRequestError as e:
+            messages.warning(request,"InvalidRequestError")
+            return redirect('core:checkout')
+        except stripe.error.AuthenticationError as e:
+            messages.warning(request,"AuthenticationError")
+            return redirect('core:checkout')
+        except stripe.error.APIConnectionError as e:
+            messages.warning(request,"APIConnectionError")
+            return redirect('core:checkout')
+        except stripe.error.StripeError as e:
+            messages.warning(request,"StripeError")
+            return redirect('core:checkout')
+        except Exception as e:
+            messages.warning(request,"error ! Try again please !")
+            return redirect('core:checkout')
         
 
 
