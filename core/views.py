@@ -94,39 +94,43 @@ def DetailItem(request,pk):
         return render(request,'core/detail_item.html',context)
 
     if request.method=='POST':
-        
+        if request.user.is_authenticated:
             
-        form=add_to_cart(data=request.POST)
-        #create order
-        order_qs=Order.objects.filter(user=request.user,is_ordered=False)
-        #retourne un query set <queryset [<oder:adev>]> donc pour avoir adev , on doit ajouter [0] 
-        if form.is_valid():
-            item=Item.objects.get(pk=pk)
-            color=form.cleaned_data['color']
-            size=form.cleaned_data['size']
-            quantity=form.cleaned_data.get('quantity')
-            Order_item=OrderItem(user=request.user,item=item,size=size,color=color,quantity=quantity)
-            Order_item.save()
-            if order_qs.exists():
-                order=order_qs[0]
+            
+            form=add_to_cart(data=request.POST)
+            #create order
+            order_qs=Order.objects.filter(user=request.user,is_ordered=False)
+            #retourne un query set <queryset [<oder:adev>]> donc pour avoir adev , on doit ajouter [0] 
+            if form.is_valid():
+                item=Item.objects.get(pk=pk)
+                color=form.cleaned_data['color']
+                size=form.cleaned_data['size']
+                quantity=form.cleaned_data.get('quantity')
+                Order_item=OrderItem(user=request.user,item=item,size=size,color=color,quantity=quantity)
+                Order_item.save()
+                if order_qs.exists():
+                    order=order_qs[0]
 
 
-                order.order_items.add(Order_item)
+                    order.order_items.add(Order_item)
 
-                messages.success(request,"Your order has been created ")
-                    #add order in the cart
+                    messages.success(request,"Your order has been created ")
+                        #add order in the cart
 
-                    #redirect them to the checkout form
-                return redirect('core:detail_item' ,pk)
-            else:
-                order_new=Order.objects.create(user=request.user,date_creation=timezone.now())
-                order_new.save()
+                        #redirect them to the checkout form
+                    return redirect('core:detail_item' ,pk)
+                else:
+                    order_new=Order.objects.create(user=request.user,date_creation=timezone.now())
+                    order_new.save()
 
-                order_new.order_items.add(Order_item)
+                    order_new.order_items.add(Order_item)
         
       
-
-return redirect('core:detail_item',pk)
+        else:
+            messages.info(request,'Sorry you have to sign in First')
+            return redirect('/login/')
+        
+    return redirect('core:detail_item',pk)
 
 @login_required(login_url="/login/")
 def Cart(request):
@@ -232,7 +236,7 @@ def Payment_stripe(request):
     order=Order.objects.get(user=request.user,is_ordered=False)
     if order.adress is None:
         messages.info(request,"please Submit Your Billing Adress first !")
-        return HttpResponse('hhh')
+        return redirect('core:checkout')
     else:
 
     
