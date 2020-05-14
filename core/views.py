@@ -123,10 +123,10 @@ def DetailItem(request,pk):
                     order_new.save()
 
                     order_new.order_items.add(Order_item)
-
-    else:
-        messages.info(request,"please login first !")
-        return redirect('core:account_login')
+        
+        else:
+            messages.info(request,"please login first !")
+            return redirect('core:account_login')
 
 return redirect('core:detail_item',pk)
 
@@ -339,5 +339,5 @@ def Remove_Order(request,pk):
     return redirect('core:cart')
 
 
-def views_404(request):
+def views_404(request,*args,**kwargs):
     return render(request,'errors_404.html',status=404)
