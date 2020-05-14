@@ -336,6 +336,3 @@ def Remove_Order(request,pk):
     messages.info(request,'Your Order Has been Deleted !')
     return redirect('core:cart')
 
-
-def views_404(request,*args,**kwargs):
-    return render(request,'errors_404.html',status=404)
