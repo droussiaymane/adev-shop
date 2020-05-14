@@ -94,38 +94,41 @@ def DetailItem(request,pk):
         return render(request,'core/detail_item.html',context)
 
     if request.method=='POST':
-        form=add_to_cart(data=request.POST)
-        #create order
-        order_qs=Order.objects.filter(user=request.user,is_ordered=False)
-        #retourne un query set <queryset [<oder:adev>]> donc pour avoir adev , on doit ajouter [0] 
-        if form.is_valid():
-            item=Item.objects.get(pk=pk)
-            color=form.cleaned_data['color']
-            size=form.cleaned_data['size']
-            quantity=form.cleaned_data.get('quantity')
-            Order_item=OrderItem(user=request.user,item=item,size=size,color=color,quantity=quantity)
-            Order_item.save()
-            if order_qs.exists():
-                order=order_qs[0]
+        if request.user.is_authenticated:
             
-            
-                order.order_items.add(Order_item)
-                    
-                messages.success(request,"Your order has been created ")
-                    #add order in the cart
+            form=add_to_cart(data=request.POST)
+            #create order
+            order_qs=Order.objects.filter(user=request.user,is_ordered=False)
+            #retourne un query set <queryset [<oder:adev>]> donc pour avoir adev , on doit ajouter [0] 
+            if form.is_valid():
+                item=Item.objects.get(pk=pk)
+                color=form.cleaned_data['color']
+                size=form.cleaned_data['size']
+                quantity=form.cleaned_data.get('quantity')
+                Order_item=OrderItem(user=request.user,item=item,size=size,color=color,quantity=quantity)
+                Order_item.save()
+                if order_qs.exists():
+                    order=order_qs[0]
 
-                    #redirect them to the checkout form
-                return redirect('core:detail_item' ,pk)
-            else:
-                order_new=Order.objects.create(user=request.user,date_creation=timezone.now())
-                order_new.save()
-                
-                order_new.order_items.add(Order_item)
-            
-        
 
-    
-    return redirect('core:detail_item',pk)
+                    order.order_items.add(Order_item)
+
+                    messages.success(request,"Your order has been created ")
+                        #add order in the cart
+
+                        #redirect them to the checkout form
+                    return redirect('core:detail_item' ,pk)
+                else:
+                    order_new=Order.objects.create(user=request.user,date_creation=timezone.now())
+                    order_new.save()
+
+                    order_new.order_items.add(Order_item)
+
+    else:
+        messages.info(request,"please login first !")
+        return redirect('core:account_login')
+
+return redirect('core:detail_item',pk)
 
 @login_required(login_url="/login/")
 def Cart(request):
