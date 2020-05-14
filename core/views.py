@@ -126,7 +126,7 @@ def DetailItem(request,pk):
         
         else:
             messages.info(request,"please login first !")
-            return redirect('core:account_login')
+            return redirect('/login/')
 
 return redirect('core:detail_item',pk)
 
