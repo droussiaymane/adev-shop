@@ -232,7 +232,7 @@ def Payment_stripe(request):
     order=Order.objects.get(user=request.user,is_ordered=False)
     if order.adress is None:
         messages.info(request,"please Submit Your Billing Adress first !")
-        return redirect('core:checkout')
+        return HttpResponse('hhh')
     else:
 
     
